@@ -1,37 +1,55 @@
 import { useEffect, useState } from "react";
 import { socket } from "../socket";
 
+interface Message {
+  senderId: number;
+  chatId: number;
+  content: string;
+  createdAt: string
+}
+
+
 function Chat() {
-  type Message = string;
+  const [value, setValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
 
-    const [value, setValue] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [messages, setMessages] = useState<Message[]>([]);
-  
-    function onSubmit(event:any) {
-      event.preventDefault();
-      setIsLoading(true);
+  async function sendMessage(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setIsLoading(true);
+    
+    try {
+      // Assuming you have a way to get the current user ID
       
-      socket.timeout(1000).emit('messageToServer', value, () => {
-        setIsLoading(false);
-      });
-      setValue('')
+      const newMessage: Message = {
+        senderId: 1,
+        chatId: 1,
+        content: value.trim(),
+        createdAt: String(new Date())
+      };
+
+      await socket.emit('messageToServer', newMessage);
+      setValue('');
+    } catch (error) {
+      console.error('Error sending message:', error);
+    } finally {
+      setIsLoading(false);
     }
+  }
 
 
-    useEffect(() => {
-      const handleMessage = (message: Message) => {
-        setMessages(prevMessages => [...prevMessages, message]);
-        console.log('New message:', message);
-      };
-    
-      socket.on('messageToClient', handleMessage);
-    
-      return () => {
-        socket.off('messageToClient', handleMessage);
-      };
-    }, []);
+  useEffect(() => {
+    const handleMessage = (message: Message) => {
+      setMessages(prevMessages => [...prevMessages, message]);
+      console.log('New message:', message);
+    };
 
+    socket.on('messageToClient', handleMessage);
+
+    return () => {
+      socket.off('messageToClient', handleMessage);
+    };
+  }, []);
 
 
 
@@ -51,10 +69,10 @@ function Chat() {
                 </div>
               </div>
               <div className="chat-header">
-                Obi-Wan Kenobi
-                <time className="text-xs opacity-50">12:45</time>
+                {message.senderId}
+                <time className="text-xs opacity-50">{message.createdAt}</time>
               </div>
-              <div className="chat-bubble">{message}</div>
+              <div className="chat-bubble">{message.content}</div>
               <div className="chat-footer opacity-50">Delivered</div>
               </div>
               ))
@@ -70,21 +88,25 @@ function Chat() {
             </div>
             <div className="chat-header">
               Anakin
-              <time className="text-xs opacity-50">12:46</time>
+              <time className="text-xs opacity-50"></time>
             </div>
             <div className="chat-bubble">I hate you!</div>
             <div className="chat-footer opacity-50">Seen at 12:46</div>
           </div>
         </div>
-        <form action="" method="post" onSubmit={onSubmit} className="flex gap-5">
+        <form action="" method="post" onSubmit={sendMessage} className="flex gap-5">
           <label className="input input-bordered flex items-center gap-2">
-            Name
-            <input type="text" className="grow" placeholder="Daisy" onChange={ e => setValue(e.target.value) } value={value} />
+            <input type="text" className="grow" placeholder="enter message" onChange={ e => setValue(e.target.value) } value={value} />
           </label>
           <button type="submit"  disabled={ isLoading }>send</button>
         </form>
     </div>
   )
 }
+
+
+
+
+
 
 export default Chat
