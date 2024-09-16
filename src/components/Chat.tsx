@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { socket } from "../socket";
 
+
 interface Message {
+  id?: number
   senderId: number;
   chatId: number;
   content: string;
@@ -18,38 +20,31 @@ function Chat() {
     event.preventDefault();
     setIsLoading(true);
     
-    try {
-      // Assuming you have a way to get the current user ID
-      
+    try {      
       const newMessage: Message = {
         senderId: 1,
-        chatId: 1,
+        chatId: 2,
         content: value.trim(),
         createdAt: String(new Date())
       };
 
       await socket.emit('messageToServer', newMessage);
       setValue('');
-    } catch (error) {
+    } 
+    
+    catch (error) {
       console.error('Error sending message:', error);
-    } finally {
+    } 
+    
+    finally {
       setIsLoading(false);
     }
   }
 
-
-  useEffect(() => {
-    const handleMessage = (message: Message) => {
-      setMessages(prevMessages => [...prevMessages, message]);
-      console.log('New message:', message);
-    };
-
-    socket.on('messageToClient', handleMessage);
-
-    return () => {
-      socket.off('messageToClient', handleMessage);
-    };
-  }, []);
+  socket.emit('getMessagesServer', (messages:Message[]) => {
+    // console.log('Received messages:', messages);
+    setMessages(messages);
+  });
 
 
 
@@ -58,23 +53,23 @@ function Chat() {
 
         <div id="messages" className="w-1/2" >
             {
-              messages.map((message,index) => (
+              messages?.map((message,index) => (
 
-              <div key={index} className="chat chat-start">
-              <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                <div key={index} className="chat chat-start">
+                <div className="chat-image avatar">
+                  <div className="w-10 rounded-full">
+                    <img
+                      alt="Tailwind CSS chat bubble component"
+                      src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                  </div>
                 </div>
-              </div>
-              <div className="chat-header">
-                {message.senderId}
-                <time className="text-xs opacity-50">{message.createdAt}</time>
-              </div>
-              <div className="chat-bubble">{message.content}</div>
-              <div className="chat-footer opacity-50">Delivered</div>
-              </div>
+                <div className="chat-header">
+                  {message.senderId}
+                  <time className="text-xs opacity-50">{message.createdAt}</time>
+                </div>
+                <div className="chat-bubble">{message.content}</div>
+                <div className="chat-footer opacity-50">Delivered</div>
+                </div>
               ))
             }
 
@@ -103,9 +98,6 @@ function Chat() {
     </div>
   )
 }
-
-
-
 
 
 

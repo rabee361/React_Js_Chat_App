@@ -10,6 +10,14 @@ interface User {
     online: boolean
   }
 
+  interface Chat {
+    id: number;
+    user1Id: number;
+    user2Id: number;
+    user1: User;
+    user2: User;
+}
+
 function ChatBubbles() {
     const {data} = useQuery({ queryKey:['users'] , queryFn: fetchUsers})
     
@@ -17,15 +25,16 @@ function ChatBubbles() {
   return (
     <div className="flex flex-col gap-3 w-fit text-nowrap p-3">
         {Array.isArray(data) && data.length > 0 ? (
-            data.map((user, index) => (
+            
+            data.map((chat, index) => (
                 
                 <div key={index} className="flex gap-3">
                     <div className='avatar online'>
                         <div className="w-10 rounded-full">
-                            <img src={user.image} alt={`Avatar for ${user.username}`} />
+                            <img src={chat.user1.image} alt={`Avatar for ${chat.user1.username}`} />
                         </div>
                     </div>
-                    <div>{user.username}</div>
+                    <div>{chat.user1.id}</div>
                 </div>
             ))
         ) : (
@@ -40,8 +49,11 @@ const headers = {
     'Content-Type': 'application/json'
   };
 
-const fetchUsers = (): Promise<User[]> =>
-    axios.get('http://localhost:3000/users' , {headers}).then((response) => response.data)
+const fetchUsers = (): Promise<Chat[]> => (
+    axios.get('http://localhost:3000/users/chats/1' , {headers}).then((response) => response.data)
+)
+
+
  
 
 export default ChatBubbles

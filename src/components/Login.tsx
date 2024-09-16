@@ -1,10 +1,32 @@
 import axios from "axios"
-import { useState } from "react"
+import { create } from 'zustand'
+import useToken from "./store"
+
+type LoginState = {
+  email: string
+  password: string
+}
+
+type LoginAction = {
+  setEmail: (email: LoginState['email']) => void
+  setPassword: (email: LoginState['password']) => void
+}
+
+const useLoginStore = create<LoginState & LoginAction>((set) => ({
+  email: '',
+  password: '',
+  setEmail: (email) => set(() => ({ email: email })),
+  setPassword: (password) => set(() => ({ password: password })),
+}))
 
 function Login() {
+  const {setToken} = useToken()
 
-  let [email , setEmail] = useState('')
-  let [password , setPassword] = useState('')
+  const email = useLoginStore((state) => state.email)
+  const password = useLoginStore((state) => state.password)
+  const setEmail = useLoginStore((state) => state.setEmail)
+  const setPassword = useLoginStore((state) => state.setPassword)
+
 
   const handleEmailChange = (e : React.ChangeEvent<HTMLInputElement>) => (
     setEmail(e.target.value)
@@ -21,7 +43,9 @@ function Login() {
         email: email,
         password: password
       });
-      console.log(result);
+      setToken(result.data.token)
+      
+      
     } catch (error) {
       console.error('Login failed:', error);
     }
