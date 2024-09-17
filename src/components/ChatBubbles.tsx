@@ -23,7 +23,7 @@ function ChatBubbles() {
     
 
   return (
-    <div className="flex flex-col gap-3 w-fit text-nowrap p-3">
+    <div className="absolute flex flex-col gap-3 w-fit text-nowrap p-3">
         {Array.isArray(data) && data.length > 0 ? (
             
             data.map((chat, index) => (
