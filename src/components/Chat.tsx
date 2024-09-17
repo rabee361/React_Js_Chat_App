@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { socket } from "../socket";
+import useToken from "./store";
 
 
 interface Message {
@@ -12,6 +13,10 @@ interface Message {
 
 
 function Chat() {
+
+  const userId = useToken((state) => state.id)
+  const chatId = useToken((state) => state.chatId)
+
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -22,8 +27,8 @@ function Chat() {
     
     try {      
       const newMessage: Message = {
-        senderId: 1,
-        chatId: 2,
+        senderId: userId,
+        chatId: chatId,
         content: value.trim(),
         createdAt: String(new Date())
       };
@@ -41,8 +46,7 @@ function Chat() {
     }
   }
 
-  socket.emit('getMessagesServer', (messages:Message[]) => {
-    // console.log('Received messages:', messages);
+  socket.emit('getMessagesServer' , chatId , (messages:Message[]) => {
     setMessages(messages);
   });
 

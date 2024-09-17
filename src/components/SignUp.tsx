@@ -1,6 +1,7 @@
 import axios from "axios"
 import { create } from 'zustand'
 import useToken from "./store"
+import { useNavigate } from "react-router-dom"
 
 
 type SignUpState = {
@@ -31,7 +32,10 @@ const useSignUpStore = create<SignUpState & SignUpAction>((set) => ({
 
 function SignUp() {
 
-  const {setToken} = useToken();
+  const setToken = useToken((state) => state.setToken);
+  const setUserId = useToken((state) => state.setUserId);
+
+  const navigate = useNavigate()
 
   const email = useSignUpStore((state) => state.email)
   const username = useSignUpStore((state) => state.username)
@@ -65,8 +69,9 @@ function SignUp() {
         password2: password2,
         username:username
       });
-      console.log(result.data.token);
       setToken(result.data.token)
+      setUserId(result.data.id)
+      navigate('/home');
       
     } catch (error) {
       console.error('Login failed:', error);

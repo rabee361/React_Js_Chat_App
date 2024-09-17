@@ -1,7 +1,7 @@
 import axios from "axios"
 import { create } from 'zustand'
 import useToken from "./store"
-import { redirect, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 type LoginState = {
   email: string
@@ -29,7 +29,7 @@ function Login() {
   const setPassword = useLoginStore((state) => state.setPassword)
 
   const setToken = useToken((state) => state.setToken)
-  const token = useToken((state) => state.token)
+  const setUserId = useToken((state) => state.setUserId)
 
   const handleEmailChange = (e : React.ChangeEvent<HTMLInputElement>) => (
     setEmail(e.target.value)
@@ -47,6 +47,7 @@ function Login() {
         password: password
       });
       setToken(result.data.token)
+      setUserId(result.data.id)
       
       navigate('/home')
       

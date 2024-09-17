@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useQuery } from "react-query"
+import useToken from "./store"
 
 interface User {
     id: number
@@ -20,15 +21,15 @@ interface User {
 
 function ChatBubbles() {
     const {data} = useQuery({ queryKey:['users'] , queryFn: fetchUsers})
-    
+    const setChatId = useToken((state) => state.setChatId)
 
   return (
     <div className="absolute flex flex-col gap-3 w-fit text-nowrap p-3">
         {Array.isArray(data) && data.length > 0 ? (
             
-            data.map((chat, index) => (
+            data.map((chat) => (
                 
-                <div key={index} className="flex gap-3">
+                <div key={chat.id} className="flex gap-3" onClick={() => setChatId(chat.id)}>
                     <div className='avatar online'>
                         <div className="w-10 rounded-full">
                             <img src={chat.user1.image} alt={`Avatar for ${chat.user1.username}`} />
