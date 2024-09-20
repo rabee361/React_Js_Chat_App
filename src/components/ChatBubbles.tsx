@@ -35,7 +35,7 @@ function ChatBubbles() {
                             <img src={chat.user1.image} alt={`Avatar for ${chat.user1.username}`} />
                         </div>
                     </div>
-                    <div>{chat.user1.id}</div>
+                    <div>{chat.user1.username}</div>
                 </div>
             ))
         ) : (

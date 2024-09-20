@@ -3,7 +3,7 @@ import ChatBubbles from "./ChatBubbles"
 
 function Home() {
   return (
-    <div>
+    <div className="overflow-visible">
         <ChatBubbles/>
         <Chat/>
     </div>
