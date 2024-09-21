@@ -22,6 +22,7 @@ interface User {
 function ChatBubbles() {
     const {data} = useQuery({ queryKey:['users'] , queryFn: fetchUsers})
     const setChatId = useToken((state) => state.setChatId)
+    
 
   return (
     <div className="absolute flex flex-col gap-3 w-fit text-nowrap p-3">
