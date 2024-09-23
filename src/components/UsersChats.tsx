@@ -19,13 +19,12 @@ interface User {
     user2: User;
 }
 
-function ChatBubbles() {
+
+function UsersChat() {
     const {data} = useQuery({ queryKey:['users'] , queryFn: fetchUsers})
     const setChatId = useToken((state) => state.setChatId)
-    
-
   return (
-    <div className="absolute flex flex-col gap-3 w-fit text-nowrap p-3">
+    <div className="absolute flex flex-col gap-3 w-fit text-nowrap p-3 mt-20">
         {Array.isArray(data) && data.length > 0 ? (
             
             data.map((chat) => (
@@ -58,4 +57,4 @@ const fetchUsers = (): Promise<Chat[]> => (
 
  
 
-export default ChatBubbles
+export default UsersChat

@@ -64,6 +64,7 @@ function Chat() {
           setImageValue(null);  
           mainControls.start("initial");
         }
+        scrollBottom();
 
     } 
   
@@ -95,11 +96,20 @@ function Chat() {
       }
   }
 
+  const con = document.getElementById('messages')
+  const scrollBottom = () => {
+    if (con) {
+      con.scrollTop = con.scrollHeight;
+    }
+  }
+
 
   return ( 
-    <div className=" flex flex-col items-center justify-end w-full h-screen gap-3 overflow-visible">
+    <div className=" flex flex-col items-center justify-end w-full h-screen gap-3 text-white ">
 
-        <div id="messages" className="w-1/2 overflow-visible" >
+        <div id="messages" className="w-1/2 flex flex-col-reverse overflow-auto overflow-y-auto scrollbar-thin scrollbar-track-transparent" >
+            
+            <div>
             {
               messages?.map((message,index) => (
                   
@@ -135,9 +145,6 @@ function Chat() {
                       <div className="bg-gray-700 p-1 rounded-lg mb-1">
                         <a href={message.attach}><img src={message.attach} className="w-32 rounded-lg" alt="" /></a>
                       </div>
-                      {/* <div className="chat-bubble">
-                        {message.content}
-                      </div> */}
                       <div className="chat-footer opacity-50">{message.createdAt}</div>
                     </div>
                   ) : 
@@ -150,9 +157,6 @@ function Chat() {
                             src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
                         </div>
                       </div>
-                      {/* <div className="bg-gray-700 p-1 rounded-lg mb-1">
-                        <a href={message.attach}><img src={message.attach} className="w-32 rounded-lg" alt="" /></a>
-                      </div> */}
                       <div className="chat-bubble">
                         {message.content}
                       </div>
@@ -162,9 +166,10 @@ function Chat() {
                 
               ))
             }
+            </div>
 
         </div>
-
+        
         <motion.div id="img" variants={variants} animate={mainControls} initial="initial" className="w-1/3 h-20 flex items-center justify-between border border-gray-700 rounded-lg">
             {imageValue && (
             <img src={URL.createObjectURL(imageValue)} alt="" className="h-full" />
@@ -172,7 +177,8 @@ function Chat() {
             <a href="" className="mr-5"><button className="border border-gray-700 rounded-lg py-1 px-3 hover:bg-slate-800 ease-linear duration-200">cancel</button></a>
         </motion.div>
 
-        <form action="" method="post" onSubmit={sendMessage} className="flex gap-1 mb-4">
+
+        <form action="" method="post" onSubmit={sendMessage} className="flex gap-1 mb-4 text-white ">
           <label className="input input-bordered flex items-center gap-2">
             <input type="text" className="grow" placeholder="enter message" onChange={ e => setValue(e.target.value) } value={value} />
           </label>

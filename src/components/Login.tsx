@@ -2,6 +2,7 @@ import axios from "axios"
 import { create } from 'zustand'
 import useToken from "./store"
 import { useNavigate } from "react-router-dom"
+import { useForm, SubmitHandler } from "react-hook-form"
 
 type LoginState = {
   email: string
@@ -22,6 +23,12 @@ const useLoginStore = create<LoginState & LoginAction>((set) => ({
 
 function Login() {
   const navigate = useNavigate();
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<LoginState>()
 
   const email = useLoginStore((state) => state.email)
   const password = useLoginStore((state) => state.password)
@@ -59,14 +66,15 @@ function Login() {
  
 
   return (
-    <div className="h-screen w-full flex items-center justify-center">
-      <div className="">
-        <p className="text-center">
-          Title
+    <div className="h-screen w-full flex items-center justify-center text-white bg-zinc-900">
+      <div className="w-1/2 flex flex-col gap-20 p-7 rounded-xl drop-shadow-lg">
+        <p className="text-center text-4xl">
+          Login
         </p>
-        <form method="post" className="flex flex-col items-center" onSubmit={sendForm}>
-          <div className="flex flex-col gap-2">
-            <label className="input input-bordered flex items-center gap-2">
+        <form method="post" className="flex flex-col items-center" onSubmit={handleSubmit(sendForm)}>
+          <div className="w-1/2 flex flex-col gap-2">
+            {errors.email?.type === "required" ? <span className="text-sm text-red-400">{errors.email.message}</span> : " "}
+            <label className="input input-bordered flex items-center gap-2 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -77,10 +85,12 @@ function Login() {
                 <path
                   d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
               </svg>
-              <input type="text" className="grow" placeholder="Email" onChange={handleEmailChange} />
+              <input type="text" className="grow text-white" placeholder="Email" {...register("email",{ required: "Email Address is required"})} onChange={handleEmailChange} />
+                
             </label>
 
-            <label className="input input-bordered flex items-center gap-2">
+            {errors.password?.type === "required" ? <span className="text-sm text-red-400">{errors.password?.message}</span> : " "}
+            <label className="input input-bordered flex items-center gap-2 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -91,15 +101,15 @@ function Login() {
                   d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
                   clipRule="evenodd" />
               </svg>
-              <input type="password" name="password" id="password" className="grow" onChange={handlePasswordChange} />
+              <input type="password" id="password" className="grow text-white" placeholder="Password" {...register("password",{ required: "Password is required"})} onChange={handlePasswordChange} />
             </label>
           </div>
-          <button type="submit">login</button>
+          <button type="submit" className="mt-8 w-1/2 bg-red-700 hover:bg-red-800 text-white font-bold px-7 py-1 drop-shadow-lg hover:drop-shadow-sm rounded-xl ease-linear duration-150">login</button>
         </form>
-        <div className="flex flex-col gap-3 text-center">
+        <div className="flex flex-col gap-3 text-center items-center justify-center">
           don't have an account ?
-          <button>
-            Sign Up
+          <button className="w-1/2 px-7 py-1 bg-white text-red-700 font-bold hover:bg-gray-200 drop-shadow-lg hover:drop-shadow-sm rounded-xl">
+            sign up
           </button>
         </div>
       </div>

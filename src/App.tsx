@@ -8,6 +8,7 @@ import Home from './components/Home.tsx';
 import { QueryClientProvider , QueryClient } from 'react-query';
 import Login from './components/Login.tsx';
 import SignUp from './components/SignUp.tsx';
+import Navbar from "./components/Navbar.tsx";
 
 
 const queryClient = new QueryClient()
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
 function App() {
   return (
       <QueryClientProvider client={queryClient}>
+        <Navbar/>
         <RouterProvider router={router}/>
       </QueryClientProvider>
   )

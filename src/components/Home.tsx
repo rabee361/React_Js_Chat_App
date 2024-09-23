@@ -1,10 +1,10 @@
 import Chat from "./Chat"
-import ChatBubbles from "./ChatBubbles"
+import UsersChats from "./UsersChats"
 
 function Home() {
   return (
-    <div className="overflow-visible">
-        <ChatBubbles/>
+    <div className=" h-auto overflow-visible bg-zinc-900">
+        <UsersChats/>
         <Chat/>
     </div>
   )
