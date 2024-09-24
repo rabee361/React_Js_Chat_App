@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useQuery } from "react-query"
-import useToken from "./store"
+import useToken from "../store/store"
 
 interface User {
     id: number

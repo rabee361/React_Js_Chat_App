@@ -1,18 +1,10 @@
 import axios from "axios"
 import { create } from 'zustand'
-import useToken from "./store"
-import { useNavigate } from "react-router-dom"
-import { useForm, SubmitHandler } from "react-hook-form"
+import useToken from "../store/store"
+import { Link, useNavigate } from "react-router-dom"
+import { useForm } from "react-hook-form"
+import { LoginAction , LoginState } from "../types/types"
 
-type LoginState = {
-  email: string
-  password: string
-}
-
-type LoginAction = {
-  setEmail: (email: LoginState['email']) => void
-  setPassword: (email: LoginState['password']) => void
-}
 
 const useLoginStore = create<LoginState & LoginAction>((set) => ({
   email: '',
@@ -23,7 +15,7 @@ const useLoginStore = create<LoginState & LoginAction>((set) => ({
 
 function Login() {
   const navigate = useNavigate();
-
+  
   const {
     register,
     formState: { errors },
@@ -48,11 +40,13 @@ function Login() {
 
   const sendForm = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
     try {
       const result = await axios.post('http://localhost:3000/auth/login', {
         email: email,
         password: password
       });
+      
       setToken(result.data.token)
       setUserId(result.data.id)
       
@@ -108,9 +102,11 @@ function Login() {
         </form>
         <div className="flex flex-col gap-3 text-center items-center justify-center">
           don't have an account ?
-          <button className="w-1/2 px-7 py-1 bg-white text-red-700 font-bold hover:bg-gray-200 drop-shadow-lg hover:drop-shadow-sm rounded-xl">
-            sign up
-          </button>
+          <Link to={'/sign-up'} className="w-1/2" >
+            <button className="w-full px-7 py-1 bg-white text-red-700 font-bold hover:bg-gray-200 drop-shadow-lg hover:drop-shadow-sm rounded-xl">
+                  sign up
+            </button>
+          </Link>
         </div>
       </div>
     </div>

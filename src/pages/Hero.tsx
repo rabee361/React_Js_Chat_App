@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import hero from "../assets/images/hero.png"
-import useToken from "./store"
+import useToken from "../store/store"
 
 
 

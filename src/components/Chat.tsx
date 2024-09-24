@@ -1,19 +1,12 @@
 import { useRef, useState } from "react";
-import { socket } from "../socket";
-import useToken from "./store";
+import { socket } from "../services/socket";
+import useToken from "../store/store";
 import { IoSend } from "react-icons/io5";
 import { GrAttachment } from "react-icons/gr";
 import { motion, useAnimation } from "framer-motion";
 import axios from "axios";
-
-interface Message {
-  id?: number
-  senderId: number;
-  chatId: number;
-  content: string;
-  createdAt: string;
-  attach?: string;
-}
+import { Message } from "../types/types"
+import Messages from "./Messages";
 
 function Chat() {
   const mainControls = useAnimation();
@@ -39,7 +32,6 @@ function Chat() {
 
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
 
   async function sendMessage(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -77,10 +69,7 @@ function Chat() {
     }
   }
 
-  socket.emit('getMessagesServer' , chatId , (messages:Message[]) => {
-    setMessages(messages);
-    
-  });
+
 
   
   const handleClick = () => {
@@ -104,71 +93,11 @@ function Chat() {
   }
 
 
+
   return ( 
     <div className=" flex flex-col items-center justify-end w-full h-screen gap-3 text-white ">
 
-        <div id="messages" className="w-1/2 flex flex-col-reverse overflow-auto overflow-y-auto scrollbar-thin scrollbar-track-transparent" >
-            
-            <div>
-            {
-              messages?.map((message,index) => (
-                  
-                  message.content && message.attach ? (
-                    <div key={index} className={`chat ${message.senderId === userId ? 'chat-end': 'chat-start'}`}>
-                      <div className="chat-image avatar">
-                        <div className="w-10 rounded-full">
-                          <img
-                            alt="Tailwind CSS chat bubble component"
-                            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                        </div>
-                      </div>
-                      <div className="bg-gray-700 p-1 rounded-lg mb-1">
-                        <a href={message.attach}><img src={message.attach} className="w-32 rounded-lg" alt="" /></a>
-                      </div>
-                      <div className="chat-bubble">
-                        {message.content}
-                      </div>
-                      <div className="chat-footer opacity-50">{message.createdAt}</div>
-                    </div>
-
-                  ) :
-                  message.attach ?
-                  (
-                    <div key={index} className={`chat ${message.senderId === userId ? 'chat-end': 'chat-start'}`}>
-                      <div className="chat-image avatar">
-                        <div className="w-10 rounded-full">
-                          <img
-                            alt="Tailwind CSS chat bubble component"
-                            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                        </div>
-                      </div>
-                      <div className="bg-gray-700 p-1 rounded-lg mb-1">
-                        <a href={message.attach}><img src={message.attach} className="w-32 rounded-lg" alt="" /></a>
-                      </div>
-                      <div className="chat-footer opacity-50">{message.createdAt}</div>
-                    </div>
-                  ) : 
-                  (
-                    <div key={index} className={`chat ${message.senderId === userId ? 'chat-end': 'chat-start'}`}>
-                      <div className="chat-image avatar">
-                        <div className="w-10 rounded-full">
-                          <img
-                            alt="Tailwind CSS chat bubble component"
-                            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-                        </div>
-                      </div>
-                      <div className="chat-bubble">
-                        {message.content}
-                      </div>
-                      <div className="chat-footer opacity-50">{message.createdAt}</div>
-                    </div>
-                  )
-                
-              ))
-            }
-            </div>
-
-        </div>
+        <Messages/>
         
         <motion.div id="img" variants={variants} animate={mainControls} initial="initial" className="w-1/3 h-20 flex items-center justify-between border border-gray-700 rounded-lg">
             {imageValue && (
@@ -176,7 +105,6 @@ function Chat() {
         )}
             <a href="" className="mr-5"><button className="border border-gray-700 rounded-lg py-1 px-3 hover:bg-slate-800 ease-linear duration-200">cancel</button></a>
         </motion.div>
-
 
         <form action="" method="post" onSubmit={sendMessage} className="flex gap-1 mb-4 text-white ">
           <label className="input input-bordered flex items-center gap-2">

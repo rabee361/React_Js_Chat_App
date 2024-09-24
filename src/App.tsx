@@ -1,13 +1,13 @@
-import Hero from "./components/Hero"
+import Hero from "./pages/Hero.tsx"
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Error from './components/Error.tsx';
-import Home from './components/Home.tsx';
+import Error from './pages/Error.tsx';
+import Home from './pages/Home.tsx';
 import { QueryClientProvider , QueryClient } from 'react-query';
-import Login from './components/Login.tsx';
-import SignUp from './components/SignUp.tsx';
+import Login from './pages/Login.tsx';
+import SignUp from './pages/SignUp.tsx';
 import Navbar from "./components/Navbar.tsx";
 
 

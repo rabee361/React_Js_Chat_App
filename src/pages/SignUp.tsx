@@ -1,38 +1,11 @@
 import axios from "axios"
-import { create } from 'zustand'
-import useToken from "./store"
+import useToken from "../store/store"
 import { useNavigate } from "react-router-dom"
-import { useForm, SubmitHandler } from "react-hook-form"
-
-
-type SignUpState = {
-  email: string
-  username: string
-  password1: string
-  password2: string
-}
-
-type SignUpAction = {
-  setEmail: (email: SignUpState['email']) => void
-  setUsername: (username: SignUpState['username']) => void
-  setPassword1: (password: SignUpState['password1']) => void
-  setPassword2: (password2: SignUpState['password2']) => void
-}
-
-const useSignUpStore = create<SignUpState & SignUpAction>((set) => ({
-  email: '',
-  username: '',
-  password1: '',
-  password2: '',
-  setEmail: (email) => set(() => ({ email: email })),
-  setUsername: (username) => set(() => ({ username: username })),
-  setPassword1: (password1) => set(() => ({ password1: password1 })),
-  setPassword2: (password2) => set(() => ({ password2: password2 })),
-}))
-
+import { useForm } from "react-hook-form"
+import { SignUpState } from "../types/types"
+import { useSignUpStore } from "../store/login.store"
 
 function SignUp() {
-
 
   const {
     register,
@@ -102,10 +75,8 @@ function SignUp() {
                 viewBox="0 0 16 16"
                 fill="currentColor"
                 className="h-4 w-4 opacity-70">
-                <path 
-                  d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
                 <path
-                  d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
+                  d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
               </svg>
               <input type="text" className="grow text-white" placeholder="Username" {...register("username",{ required: "Email Address is required"})} onChange={handleUsernameChange} />
                 
@@ -156,6 +127,9 @@ function SignUp() {
               </svg>
               <input type="password" id="password" className="grow text-white" placeholder="Confirm Password" {...register("password2",{ required: "Password is required"})} onChange={handlePassword2Change} />
             </label>
+
+            <input type="file" id="image" name="image" className="file-input file-input-bordered w-full max-w-xs" />
+
           </div>
           <button type="submit" className="mt-8 w-1/2 bg-red-700 hover:bg-red-800 text-white font-bold px-7 py-1 drop-shadow-lg hover:drop-shadow-sm rounded-xl ease-linear duration-150">sign up</button>
         </form>

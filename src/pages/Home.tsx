@@ -1,5 +1,5 @@
-import Chat from "./Chat"
-import UsersChats from "./UsersChats"
+import Chat from "../components/Chat"
+import UsersChats from "../components/UsersChats"
 
 function Home() {
   return (
