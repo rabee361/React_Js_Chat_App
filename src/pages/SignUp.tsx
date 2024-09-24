@@ -3,7 +3,7 @@ import useToken from "../store/store"
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { SignUpState } from "../types/types"
-import { useSignUpStore } from "../store/login.store"
+import { useSignUpStore } from "../store/signup.store"
 
 function SignUp() {
 

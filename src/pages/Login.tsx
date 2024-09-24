@@ -1,17 +1,9 @@
 import axios from "axios"
-import { create } from 'zustand'
 import useToken from "../store/store"
 import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
-import { LoginAction , LoginState } from "../types/types"
-
-
-const useLoginStore = create<LoginState & LoginAction>((set) => ({
-  email: '',
-  password: '',
-  setEmail: (email) => set(() => ({ email: email })),
-  setPassword: (password) => set(() => ({ password: password })),
-}))
+import { LoginState } from "../types/types"
+import { useLoginStore } from "../store/login.store"
 
 function Login() {
   const navigate = useNavigate();

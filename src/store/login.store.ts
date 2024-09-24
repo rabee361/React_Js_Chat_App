@@ -1,14 +1,10 @@
-import { create } from 'zustand'
-import { SignUpAction, SignUpState } from "../types/types";
+import { create } from "zustand";
+import { LoginAction, LoginState } from "../types/types";
 
-export const useSignUpStore = create<SignUpState & SignUpAction>((set) => ({
+
+export const useLoginStore = create<LoginState & LoginAction>((set) => ({
     email: '',
-    username: '',
-    password1: '',
-    password2: '',
+    password: '',
     setEmail: (email) => set(() => ({ email: email })),
-    setUsername: (username) => set(() => ({ username: username })),
-    setPassword1: (password1) => set(() => ({ password1: password1 })),
-    setPassword2: (password2) => set(() => ({ password2: password2 })),
+    setPassword: (password) => set(() => ({ password: password })),
   }))
-  
