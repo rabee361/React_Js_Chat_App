@@ -2,6 +2,8 @@ import { useState } from "react";
 import useToken from "../store/store";
 import { socket } from "../services/socket";
 import { Message } from "../types/types"
+import { GoFileZip } from "react-icons/go";
+import { MdOutlineHd } from "react-icons/md";
 
 function Messages() {
 
@@ -89,9 +91,25 @@ function Messages() {
                         src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
                     </div>
                 </div>
-                <div className=" bg-zinc-800 p-1 rounded-lg mb-1">
-                    <a href={message.attach}><img src={message.attach} className="w-32 rounded-lg" alt="" /></a>
-                </div>
+                <button onClick={()=>document.getElementById('my_modal_2')?.showModal()}>
+                  <div className=" bg-zinc-800 p-1 rounded-lg mb-1">
+                    <img src={message.attach} className="w-32 rounded-lg" alt="" />
+                  </div>
+                </button>
+
+                <dialog id="my_modal_2" className="modal">
+                  <div className="modal-box flex flex-col items-center gap-10 justify-center">
+                    <img src={message.attach} className="w-32 rounded-lg" alt="" />
+                    <div className="flex gap-10">
+                      <button className="flex gap-2"><GoFileZip size={20} /> download low quality</button>
+                      <button className="flex gap-2"><MdOutlineHd size={20}/> download high quality</button>
+                    </div>
+                  </div>
+                  <form method="dialog" className="modal-backdrop">
+                    <button>close</button>
+                  </form>
+                </dialog>
+
                 <div className="chat-footer opacity-50">{formatDateTime(message.createdAt)}</div>
                 </div>
             ) : 
@@ -114,6 +132,17 @@ function Messages() {
         ))
         }
         </div>
+            <div className="chat chat-start">
+                <div className="chat-image avatar">
+                    <div className="w-10 rounded-full">
+                    <img
+                        alt="Tailwind CSS chat bubble component"
+                        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                    </div>
+                </div>
+
+                <div className="chat-footer opacity-50">time</div>
+            </div>
     </div>
 
   )
