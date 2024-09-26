@@ -11,19 +11,6 @@ import Messages from "./Messages";
 function Chat() {
   const mainControls = useAnimation();
 
-  const variants = {
-    initial: {
-      x: -20, 
-      opacity: 0,
-      },
-      in: {
-      x: 0, 
-      opacity: 1,
-      transition: {
-          duration: 0.3, 
-      },
-    },
-  };
 
   const userId = useToken((state) => state.userId)
   const chatId = useToken((state) => state.chatId)
@@ -33,29 +20,34 @@ function Chat() {
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  async function sendMessage(event: React.FormEvent<HTMLFormElement>) {
+  async function sendMessage(event: React.FormEvent<HTMLFormElement>) {  
     event.preventDefault();
     setIsLoading(true);
 
     
     try {
-      const attahcment = await sendImage(imageValue)
+      const { message1 , message2} = await sendImage(imageValue)
+      console.log(message1);
+      console.log(message2);
       
       const newMessage: Message = {
         senderId: userId,
         chatId: chatId,
         content: value.trim(),
         createdAt: String(new Date()),
-        attach: attahcment.attach
+        attach: message1?.attach,
+        attachSize: message1?.attachSize,
+        attach2: message2?.attach,
+        attachSize2: message2?.attachSize,
       };
         console.log(newMessage);
 
         if (newMessage.attach || newMessage.content) {
           await socket.emit('messageToServer', newMessage);
           setValue('');
-          setImageValue(null);  
           mainControls.start("initial");
         }
+        setImageValue(null);  
         scrollBottom();
 
     } 
@@ -75,13 +67,14 @@ function Chat() {
   const handleClick = () => {
     if (hiddenFileInput.current) {
       hiddenFileInput.current.click();
+      // mainControls.start("in")
+      
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files && e.target.files[0]) {
         setImageValue(e.target.files[0]);
-        mainControls.start("in");
       }
   }
 
@@ -93,31 +86,41 @@ function Chat() {
   }
 
 
+  const handleCancel = () => {
+    setImageValue(null);
+    console.log(imageValue);
+    
+  }
+
 
   return ( 
-    <div className=" flex flex-col items-center justify-end w-full h-screen gap-3 text-white ">
+    <div className="flex flex-col items-center justify-end w-full h-screen gap-3 text-white">
 
         <Messages/>
-        
-        <motion.div id="img" variants={variants} animate={mainControls} initial="initial" className="w-1/3 h-20 flex items-center justify-between border border-gray-700 rounded-lg">
-            {imageValue && (
-            <img src={URL.createObjectURL(imageValue)} alt="" className="h-full" />
-        )}
-            <a href="" className="mr-5"><button className="border border-gray-700 rounded-lg py-1 px-3 hover:bg-slate-800 ease-linear duration-200">cancel</button></a>
-        </motion.div>
 
-        <form action="" method="post" onSubmit={sendMessage} className="flex gap-1 mb-4 text-white ">
-          <label className="input input-bordered flex items-center gap-2">
-            <input type="text" className="grow" placeholder="enter message" onChange={ e => setValue(e.target.value) } value={value} />
-          </label>
-          <button type="submit"  disabled={ isLoading } className="border rounded-lg border-gray-700 px-2" ><IoSend size={25}/></button>
+        {
+          imageValue ? (
+        <motion.div id="img" className="sm:w-1/3 w-[230px] sm:h-20 h-10 flex items-center justify-between border border-gray-700 rounded-lg">
+            {imageValue && (
+            <img src={URL.createObjectURL(imageValue)} alt="" className="h-full rounded-lg" />
+        )}
+            <button onClick={handleCancel} className="border border-gray-700 rounded-lg sm:py-1 sm:px-3 sm:p-0 p-1 text-sm hover:bg-slate-800 ease-linear duration-200">cancel</button>
+        </motion.div>
+          ) : (
+            " "
+          )
+        }
+        
+
+        <form action="" method="post" onSubmit={sendMessage} className="flex gap-2 mb-4 sm:input input input-sm input-bordered items-center text-white bg-zinc-800 rounded-lg">
+          <input type="text" className="grow" placeholder="enter message" onChange={ e => setValue(e.target.value) } value={value} />
+          <button  type="submit"   disabled={ isLoading } className="hover:text-red-500 ease-linear duration-200"><IoSend/></button>
           <input type="file" ref={hiddenFileInput} onChange={handleChange} className="hidden" />
-          <button disabled={ isLoading } onClick={handleClick} className="border rounded-lg border-gray-700 p-2 pt-3" ><GrAttachment size={25}/></button>
+          <button onClick={handleClick} className="hover:text-red-500 ease-linear duration-200" ><GrAttachment/></button>
         </form>
     </div>
   )
 }
-
 
 
 async function sendImage(imageValue: File | null) {
@@ -132,15 +135,14 @@ async function sendImage(imageValue: File | null) {
         'Content-Type': 'multipart/form-data',
       },
     });
+
+    console.log(result.data);
+    
     return result.data;
   } catch (error) {
     console.error('Failed to send image:', error);
     throw error;
   }
 }
-
-
-
-
 
 export default Chat

@@ -6,6 +6,9 @@ export interface Message {
     content: string;
     createdAt: string;
     attach?: string;
+    attachSize?: string;
+    attach2?: string;
+    attachSize2?: string;
   }
 
 export type LoginState = {
@@ -32,3 +35,21 @@ export type SignUpAction = {
     setPassword2: (password2: SignUpState['password2']) => void
   }
   
+
+
+export interface User {
+    id: number
+    username: string
+    email: string
+    password: string
+    image: string
+    online: boolean
+  }
+
+export interface Chat {
+    id: number;
+    user1Id: number;
+    user2Id: number;
+    user1: User;
+    user2: User;
+}

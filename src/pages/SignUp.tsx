@@ -1,6 +1,6 @@
 import axios from "axios"
 import useToken from "../store/store"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { SignUpState } from "../types/types"
 import { useSignUpStore } from "../store/signup.store"
@@ -61,15 +61,15 @@ function SignUp() {
  
 
   return (
-    <div className="h-screen w-full flex items-center justify-center text-white bg-zinc-900">
-      <div className="w-1/2 flex flex-col gap-20 p-7 rounded-xl drop-shadow-lg">
-        <p className="text-center text-4xl">
+    <div className="h-screen w-full flex items-center justify-center text-white bg-zinc-900 overflow-y-auto">
+      <div className="sm:w-1/2 w-3/4 flex flex-col gap-6 rounded-xl drop-shadow-lg">
+        <p className="text-center text-4xl sm:mb-10">
           Sign Up
         </p>
-        <form method="post" className="flex flex-col items-center" onSubmit={handleSubmit(sendForm)}>
-          <div className="w-1/2 flex flex-col gap-2">
+        <form method="post" className="flex flex-col w-full items-center" onSubmit={handleSubmit(sendForm)}>
+          <div className="w-full sm:w-[310px] flex flex-col gap-2">
             {errors.username?.type === "required" ? <span className="text-sm text-red-400">{errors.username.message}</span> : " "}
-            <label className="input input-bordered flex items-center gap-2 text-white">
+            <label className="input input-bordered sm:w-[310px]  flex items-center gap-2 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -83,7 +83,7 @@ function SignUp() {
             </label>
 
             {errors.email?.type === "required" ? <span className="text-sm text-red-400">{errors.email.message}</span> : " "}
-            <label className="input input-bordered flex items-center gap-2 text-white">
+            <label className="input input-bordered sm:w-[310px]  flex items-center gap-2 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -99,7 +99,7 @@ function SignUp() {
             </label>
 
             {errors.password1?.type === "required" ? <span className="text-sm text-red-400">{errors.password1?.message}</span> : " "}
-            <label className="input input-bordered flex items-center gap-2 text-white">
+            <label className="input input-bordered sm:w-[310px]  flex items-center gap-2 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -114,7 +114,7 @@ function SignUp() {
             </label>
 
             {errors.password2?.type === "required" ? <span className="text-sm text-red-400">{errors.password2?.message}</span> : " "}
-            <label className="input input-bordered flex items-center gap-2 text-white">
+            <label className="input input-bordered sm:w-[310px]  flex items-center gap-2 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -128,16 +128,18 @@ function SignUp() {
               <input type="password" id="password" className="grow text-white" placeholder="Confirm Password" {...register("password2",{ required: "Password is required"})} onChange={handlePassword2Change} />
             </label>
 
-            <input type="file" id="image" name="image" className="file-input file-input-bordered w-full max-w-xs" />
+            <input type="file" id="image" name="image" className="file-input file w-full sm:w-[310px]-input-bordered" />
 
           </div>
-          <button type="submit" className="mt-8 w-1/2 bg-red-700 hover:bg-red-800 text-white font-bold px-7 py-1 drop-shadow-lg hover:drop-shadow-sm rounded-xl ease-linear duration-150">sign up</button>
+          <button type="submit" className="mt-8 w-3/4 sm:w-[310px] bg-red-700 hover:bg-red-800 text-white font-bold px-7 py-1 drop-shadow-lg hover:drop-shadow-sm rounded-xl ease-linear duration-150">sign up</button>
         </form>
         <div className="flex flex-col gap-3 text-center items-center justify-center">
           Already have an account ?
-          <button className="w-1/2 px-7 py-1 bg-white text-red-700 font-bold hover:bg-gray-200 drop-shadow-lg hover:drop-shadow-sm rounded-xl">
-            login
-          </button>
+          <Link to={'/login'} className="w-3/4 sm:w-[310px]" >
+            <button className="w-full sm:w-[310px] px-7 py-1 bg-white text-red-700 font-bold hover:bg-gray-200 drop-shadow-lg hover:drop-shadow-sm rounded-xl">
+              login
+            </button>
+          </Link>
         </div>
       </div>
     </div>

@@ -5,7 +5,6 @@ import { FaSquareFacebook } from "react-icons/fa6";
 
 function Navbar() {
 
-
   const [dark, setDark] = useState(() => {
     const saved = localStorage.getItem("darkMode");
     console.log(saved);
@@ -31,12 +30,12 @@ function Navbar() {
   };
 
     return (
-      <div className=" fixed top-0 z-10 flex justify-between h-14 w-full dark:text-white text-black font-medium">
-          <div className="flex h-full items-center ml-5 gap-5 text-red-500">
-              <div>
+      <div className="  fixed top-0 z-10 flex justify-between h-10 w-full dark:text-white text-black font-medium">
+          <div className="flex w-full justify-between sm:justify-normal sm:w-auto h-full items-center ml-1 sm:ml-5 gap-5 text-red-500">
+              <div className="text-sm sm:text-large">
                 Rabee <span className="text-white">Hasan</span>
               </div>
-            <label className="grid text-white cursor-pointer place-items-center">
+            <label className="grid pr-3 text-white cursor-pointer place-items-center">
                 <input
                     type="checkbox"
                     value="synthwave"
@@ -72,6 +71,7 @@ function Navbar() {
                 </svg>
             </label>
           </div>
+          
           <div className="mr-10 hidden sm:block">
               <ul className="flex h-full items-center gap-8">
                   <li className="hover:text-red-400 ease-linear duration-100 cursor-pointer"><FaSquareFacebook size={25}/></li>

@@ -1,46 +1,33 @@
 import axios from "axios"
 import { useQuery } from "react-query"
 import useToken from "../store/store"
-
-interface User {
-    id: number
-    username: string
-    email: string
-    password: string
-    image: string
-    online: boolean
-  }
-
-  interface Chat {
-    id: number;
-    user1Id: number;
-    user2Id: number;
-    user1: User;
-    user2: User;
-}
-
+import { Chat } from "../types/types"
 
 function UsersChat() {
     const {data} = useQuery({ queryKey:['users'] , queryFn: fetchUsers})
     const setChatId = useToken((state) => state.setChatId)
   return (
-    <div className="absolute flex flex-col gap-3 w-fit text-nowrap p-3 mt-20">
+    <div className="flex sm:flex-col gap-3 w-screen sm:w-fit sm:h-screen h-fit text-nowrap sm:p-3 p-1 sm:pt-14 mt-10 sm:mt-0 sm:mr-3 overflow-x-auto">
         {Array.isArray(data) && data.length > 0 ? (
             
             data.map((chat) => (
                 
-                <div key={chat.id} className="flex gap-3" onClick={() => setChatId(chat.id)}>
+                <div key={chat.id} className="flex sm:flex-row flex-col-reverse justify-center text-xs sm:text-lg items-center sm:gap-3 gap-0 text-wrap sm:text-nowrap" onClick={() => setChatId(chat.id)}>
+                <div className="hidden sm:block">{chat.user1.username}</div>
                     <div className='avatar online'>
-                        <div className="w-10 rounded-full">
+                        <div className="sm:w-10 w-9 rounded-full">
                             <img src={chat.user1.image} alt={`Avatar for ${chat.user1.username}`} />
                         </div>
                     </div>
-                    <div>{chat.user1.username}</div>
                 </div>
             ))
         ) : (
-            <p>No users available</p>
+            <p>No users available</p> 
+            
         )}
+
+                       
+
     </div>
   )
 }

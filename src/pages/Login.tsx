@@ -30,8 +30,7 @@ function Login() {
     setPassword(e.target.value)
   )
 
-  const sendForm = async (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const sendForm = async () => {
     
     try {
       const result = await axios.post('http://localhost:3000/auth/login', {
@@ -53,14 +52,14 @@ function Login() {
 
   return (
     <div className="h-screen w-full flex items-center justify-center text-white bg-zinc-900">
-      <div className="w-1/2 flex flex-col gap-20 p-7 rounded-xl drop-shadow-lg">
+      <div className="sm:w-1/2 w-3/4 flex flex-col gap-20 sm:p-7 rounded-xl drop-shadow-lg">
         <p className="text-center text-4xl">
           Login
         </p>
-        <form method="post" className="flex flex-col items-center" onSubmit={handleSubmit(sendForm)}>
-          <div className="w-1/2 flex flex-col gap-2">
+        <form method="post" className="flex flex-col w-full items-center" onSubmit={handleSubmit(sendForm)}>
+          <div className="w-full sm:w-[310px] flex flex-col gap-2">
             {errors.email?.type === "required" ? <span className="text-sm text-red-400">{errors.email.message}</span> : " "}
-            <label className="input input-bordered flex items-center gap-2 text-white">
+            <label className="input input-bordered sm:w-[310px] flex items-center gap-2 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -76,7 +75,7 @@ function Login() {
             </label>
 
             {errors.password?.type === "required" ? <span className="text-sm text-red-400">{errors.password?.message}</span> : " "}
-            <label className="input input-bordered flex items-center gap-2 text-white">
+            <label className="input input-bordered sm:w-[310px] flex items-center gap-2 text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -87,15 +86,15 @@ function Login() {
                   d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
                   clipRule="evenodd" />
               </svg>
-              <input type="password" id="password" className="grow text-white" placeholder="Password" {...register("password",{ required: "Password is required"})} onChange={handlePasswordChange} />
+              <input type="password" id="password" className="grow w-fit text-white" placeholder="Password" {...register("password",{ required: "Password is required"})} onChange={handlePasswordChange} />
             </label>
           </div>
-          <button type="submit" className="mt-8 w-1/2 bg-red-700 hover:bg-red-800 text-white font-bold px-7 py-1 drop-shadow-lg hover:drop-shadow-sm rounded-xl ease-linear duration-150">login</button>
+          <button type="submit" className="mt-8 w-3/4 sm:w-[310px] bg-red-700 hover:bg-red-800 text-white font-bold px-7 py-1 drop-shadow-lg hover:drop-shadow-sm rounded-xl ease-linear duration-150">login</button>
         </form>
-        <div className="flex flex-col gap-3 text-center items-center justify-center">
+        <div className="w-full flex flex-col gap-3 text-center items-center justify-center">
           don't have an account ?
-          <Link to={'/sign-up'} className="w-1/2" >
-            <button className="w-full px-7 py-1 bg-white text-red-700 font-bold hover:bg-gray-200 drop-shadow-lg hover:drop-shadow-sm rounded-xl">
+          <Link to={'/sign-up'} className="w-3/4 sm:w-[310px]" >
+            <button className="w-full sm:w-[310px] px-7 py-1 bg-white text-red-700 font-bold hover:bg-gray-200 drop-shadow-lg hover:drop-shadow-sm rounded-xl">
                   sign up
             </button>
           </Link>
