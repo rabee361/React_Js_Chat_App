@@ -3,6 +3,8 @@ import useToken from "../store/store";
 import { socket } from "../services/socket";
 import { Message } from "../types/types"
 import { IoMdCloudDownload } from "react-icons/io";
+import userImage from "../assets/images/images.png"
+import myImage from "../assets/images/74.jpg"
 
 function Messages() {
 
@@ -13,7 +15,7 @@ function Messages() {
       
       const aTag = document.createElement('a')
       aTag.href = blobUrl
-      aTag.setAttribute('download' , 'image')
+      aTag.setAttribute('download' ,`image ${Math.random()}.jpg`)
       document.body.appendChild(aTag)
       aTag.click();
       aTag.remove();
@@ -71,7 +73,7 @@ function Messages() {
 
 
   return (
-    <div id="messages" className=" sm:px-28 px-5 w-full h-[400px] sm:h-screen flex flex-col-reverse overflow-auto overflow-y-auto scrollbar-thin scrollbar-track-transparent" >            
+    <div id="messages" className=" sm:px-28 px-5 w-full h-[500px] sm:h-screen flex flex-col-reverse overflow-auto overflow-y-auto scrollbar-thin scrollbar-track-transparent" >            
         <div className="h-fit">
         {
         messages?.map((message,index) => (
@@ -84,7 +86,7 @@ function Messages() {
                       <div className="w-10 rounded-full">
                       <img
                           alt="Tailwind CSS chat bubble component"
-                          src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                          src={message.senderId === 1 ? myImage : userImage} />
                       </div>
                   </div>
                   <div className="chat-bubble flex flex-col bg-zinc-800 text-white">
@@ -98,8 +100,8 @@ function Messages() {
                       <div className="modal-box flex flex-col items-center gap-10 justify-center">
                         <img src={message.attach2} className="w-32 sm:w-fit rounded-lg" alt="" />
                         <div className="flex gap-5">
-                          <button onClick={() => {downloadImage(message.attach)}} className="flex gap-2 text-center items-center justify-center"><IoMdCloudDownload className="size-5 hover:text-red-500 ease-linear duration-150"/> <span className="text-xs">{message.attachSize}</span></button>
-                          <button onClick={() => {downloadImage(message.attach2)}} className="flex gap-2 text-center items-center justify-center"><IoMdCloudDownload className="size-5 hover:text-red-500 ease-linear duration-150"/> <span className="text-xs">{message.attachSize2}</span></button>
+                          <button onClick={() => {downloadImage(message.attach)}} className="flex gap-2 text-center items-center justify-center bg-white hover:text-red-500 p-2 text-black rounded-lg"><IoMdCloudDownload className="size-5 hover:text-red-500 ease-linear duration-150"/> <span className="text-xs">{message.attachSize}</span></button>
+                          <button onClick={() => {downloadImage(message.attach2)}} className="flex gap-2 text-center items-center justify-center bg-white hover:text-red-500 p-2 text-black rounded-lg"><IoMdCloudDownload className="size-5 hover:text-red-500 ease-linear duration-150"/> <span className="text-xs">{message.attachSize2}</span></button>
                         </div>
                       </div>
                       <form method="dialog" className="modal-backdrop">
@@ -119,7 +121,7 @@ function Messages() {
                     <div className="w-10 rounded-full">
                     <img
                         alt="Tailwind CSS chat bubble component"
-                        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                        src={message.senderId === 1 ? myImage : userImage} />
                     </div>
                 </div>
                 <button onClick={()=>document.getElementById(`my_modal_${index}`)?.showModal()}>
@@ -132,8 +134,8 @@ function Messages() {
                   <div className="modal-box flex flex-col items-center gap-10 justify-center">
                     <img src={message.attach2} className="w-32 sm:w-fit rounded-lg" alt="" />
                     <div className="flex gap-5">
-                      <button onClick={() => {downloadImage(message.attach)}} className="flex gap-2 text-center items-center justify-center"><IoMdCloudDownload className="size-5 hover:text-red-500 ease-linear duration-150"/> <span className="text-xs">{message.attachSize}</span></button>
-                      <button onClick={() => {downloadImage(message.attach2)}} className="flex gap-2 text-center items-center justify-center"><IoMdCloudDownload className="size-5 hover:text-red-500 ease-linear duration-150"/> <span className="text-xs">{message.attachSize2}</span></button>
+                      <button onClick={() => {downloadImage(message.attach)}} className="flex gap-2 text-center items-center justify-center bg-white hover:text-red-500 p-2 text-black rounded-lg"><IoMdCloudDownload className="size-5  ease-linear duration-150"/> <span className="text-xs">{message.attachSize}</span></button>
+                      <button onClick={() => {downloadImage(message.attach2)}} className="flex gap-2 text-center items-center justify-center bg-white hover:text-red-500 p-2 text-black rounded-lg"><IoMdCloudDownload className="size-5 hover:text-red-500 ease-linear duration-150"/> <span className="text-xs">{message.attachSize2}</span></button>
                     </div>
                   </div>
                   <form method="dialog" className="modal-backdrop">
@@ -150,7 +152,7 @@ function Messages() {
                     <div className="w-10 rounded-full">
                     <img
                         alt="Tailwind CSS chat bubble component"
-                        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                        src={message.senderId === 1 ? myImage : userImage} />
                     </div>
                 </div>
                 <div className="chat-bubble bg-zinc-800 text-white">

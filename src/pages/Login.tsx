@@ -33,7 +33,7 @@ function Login() {
   const sendForm = async () => {
     
     try {
-      const result = await axios.post('http://localhost:3000/auth/login', {
+      const result = await axios.post('http://85.31.237.33/auth/login', {
         email: email,
         password: password
       });

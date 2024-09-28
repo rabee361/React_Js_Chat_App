@@ -44,7 +44,7 @@ function SignUp() {
   const sendForm = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const result = await axios.post('http://localhost:3000/auth/sign-up', {
+      const result = await axios.post('http://85.31.237.33/auth/sign-up', {
         email: email,
         password1: password1,
         password2: password2,

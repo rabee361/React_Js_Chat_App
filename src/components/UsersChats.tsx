@@ -6,20 +6,36 @@ import { Chat } from "../types/types"
 function UsersChat() {
     const {data} = useQuery({ queryKey:['users'] , queryFn: fetchUsers})
     const setChatId = useToken((state) => state.setChatId)
+    const userId = useToken((state) => state.userId)
+
   return (
-    <div className="flex sm:flex-col gap-3 w-screen sm:w-fit sm:h-screen h-fit text-nowrap sm:p-3 p-1 sm:pt-14 mt-10 sm:mt-0 sm:mr-3 overflow-x-auto">
+    <div className="flex sm:flex-col gap-3 w-screen sm:w-fit sm:items-end sm:h-screen h-fit text-nowrap sm:p-1 sm:px-6 p-1 sm:pt-14 mt-10 sm:mt-0 sm:mr-3 overflow-x-auto text-white">
         {Array.isArray(data) && data.length > 0 ? (
             
-            data.map((chat) => (
+            data.filter((chat) => userId === chat.user1Id || userId === chat.user2Id).map((chat) => (
                 
+                (userId === chat.user1Id) ? (
+
                 <div key={chat.id} className="flex sm:flex-row flex-col-reverse justify-center text-xs sm:text-lg items-center sm:gap-3 gap-0 text-wrap sm:text-nowrap" onClick={() => setChatId(chat.id)}>
-                <div className="hidden sm:block">{chat.user1.username}</div>
+                    <div className="hidden sm:block">{chat.user2.username}</div>
+                    <div className='avatar online'>
+                        <div className="sm:w-10 w-9 rounded-full">
+                            <img src={chat.user2.image} alt={`Avatar for ${chat.user2.username}`} />
+                        </div>
+                    </div>
+                </div>
+                ) : (
+                <div key={chat.id} className="flex sm:flex-row flex-col-reverse justify-center text-xs sm:text-lg items-center sm:gap-3 gap-0 text-wrap sm:text-nowrap" onClick={() => setChatId(chat.id)}>
+                    <div className="hidden sm:block">{chat.user1.username}</div>
                     <div className='avatar online'>
                         <div className="sm:w-10 w-9 rounded-full">
                             <img src={chat.user1.image} alt={`Avatar for ${chat.user1.username}`} />
                         </div>
                     </div>
                 </div>
+
+                )
+                
             ))
         ) : (
             <p>No users available</p> 
@@ -38,7 +54,7 @@ const headers = {
   };
 
 const fetchUsers = (): Promise<Chat[]> => (
-    axios.get('http://localhost:3000/users/chats/1' , {headers}).then((response) => response.data)
+    axios.get('http://85.31.237.33/users/chats/1' , {headers}).then((response) => response.data)
 )
 
 

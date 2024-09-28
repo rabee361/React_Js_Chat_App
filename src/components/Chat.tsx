@@ -68,7 +68,6 @@ function Chat() {
     if (hiddenFileInput.current) {
       hiddenFileInput.current.click();
       // mainControls.start("in")
-      
     }
   };
 
@@ -93,6 +92,7 @@ function Chat() {
   }
 
 
+  
   return ( 
     <div className="flex flex-col items-center justify-end w-full h-screen gap-3 text-white">
 
@@ -104,7 +104,7 @@ function Chat() {
             {imageValue && (
             <img src={URL.createObjectURL(imageValue)} alt="" className="h-full rounded-lg" />
         )}
-            <button onClick={handleCancel} className="border border-gray-700 rounded-lg sm:py-1 sm:px-3 sm:p-0 p-1 text-sm hover:bg-slate-800 ease-linear duration-200">cancel</button>
+            <button onClick={handleCancel} className="border border-gray-700 rounded-lg sm:py-1 sm:px-3 sm:p-0 p-1 mr-3 text-sm hover:bg-slate-800 ease-linear duration-200">cancel</button>
         </motion.div>
           ) : (
             " "
@@ -130,14 +130,12 @@ async function sendImage(imageValue: File | null) {
     const formData = new FormData();
     formData.append('image', imageValue);
 
-    const result = await axios.post('http://localhost:3000/chats/upload', formData, {
+    const result = await axios.post('http://85.31.237.33/chats/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-
     console.log(result.data);
-    
     return result.data;
   } catch (error) {
     console.error('Failed to send image:', error);
